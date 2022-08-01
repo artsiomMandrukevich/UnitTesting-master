@@ -3,22 +3,24 @@ package JUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import shop.RealItem;
-import Helpers.ConstTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static Helpers.Const.*;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RealItemTest {
 
-    private RealItem realItemTest;
+    private RealItem realTestItem;
 
     @BeforeEach
-    void prepareRealItemTestData(){
-        realItemTest = new RealItem();
-        realItemTest.setWeight(ConstTest.EXPECT_WEIGHT);
+    void prepareRealItemTestData() {
+        realTestItem = new RealItem();
+        realTestItem.setWeight(EXPECT_WEIGHT);
     }
 
-    @Test()
-    void getWeightTest(){
-        assertEquals(realItemTest.getWeight(), ConstTest.EXPECT_WEIGHT);
+    @Test
+    void testToStringWeight() {
+        assertTrue(realTestItem.toString().contains("Weight: " + EXPECT_WEIGHT));
     }
+
 }

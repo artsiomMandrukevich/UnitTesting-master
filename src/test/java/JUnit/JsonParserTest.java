@@ -1,65 +1,55 @@
 package JUnit;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import parser.JsonParser;
+import parser.NoSuchFileException;
 import parser.Parser;
 import shop.Cart;
-import Helpers.ConstTest;
+
+import static Helpers.Const.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonParserTest {
 
     private Parser parser;
-    private Cart writeCartTest;
-    private Cart readFromWriteCartTest;
-
-
-    private void prepareWriteToFileTest(){
-        writeCartTest = new Cart(ConstTest.EXPECT_WRITE_CART_NAME);
-        parser.writeToFile(writeCartTest);
-        readFromWriteCartTest = parser.readFromFile(new File(ConstTest.EXPECT_WRITE_PATH_FILE));
-    }
+    private Cart testCart;
 
     @BeforeEach
-    void prepareParser(){
+    void prepareParserAndTestCart() {
+        testCart = new Cart(TEST_CART_NAME);
         parser = new JsonParser();
     }
 
     @Test
-    void readFromFileTest(){
-        Cart readCartTest = parser.readFromFile(new File(ConstTest.EXPECT_READ_FROM_FILE_CORRECT_FILE));
+    void testReadFromFile() {
+        Cart readCartTest = parser.readFromFile(new File(PATH_TO_EUGEN_CART_JSON));
         assertAll(
                 "readFromFileTest",
-                () -> assertEquals(readCartTest.getCartName(), ConstTest.EXPECT_READ_FROM_FILE_CART_NAME),
-                () -> assertEquals(readCartTest.getTotalPrice(), ConstTest.EXPECT_READ_FROM_FILE_TOTAL_PRICE)
+                () -> assertEquals(EXPECT_EUGEN_CART_NAME, readCartTest.getCartName()),
+                () -> assertEquals(EXPECT_EUGEN_TOTAL_PRICE, readCartTest.getTotalPrice())
         );
     }
 
-    @Test()
-    void readFromFileExceptionTest(){
-        assertThrows(Exception.class, ()->parser.readFromFile(new File(ConstTest.EXPECT_READ_FROM_FILE_INCORRECT_EXCEPTION_FILE)));
+    @ParameterizedTest
+    @ValueSource(strings = {"testname", "fail_name", ""})
+    void testReadFromFileException(String fileName) {
+        assertThrows(NoSuchFileException.class, () -> parser.readFromFile(new File("src/main/resources/" + fileName + ".json")));
     }
 
-    @Test()
-    void readFromNoExistingFileTest(){
-        try{
-            parser.readFromFile(new File(ConstTest.EXPECT_READ_FROM_FILE_NO_EXISTING_FILE));
-        } catch (RuntimeException e) {
-            assertEquals("File " + ConstTest.EXPECT_READ_FROM_FILE_NO_EXISTING_FILE.replace("/", "\\") + ".json not found!",
-                    e.getMessage());
-        }
-    }
-
-    @Test()
-    @Disabled()
-    void writeToFileTest(){
-        prepareWriteToFileTest();
-        assertEquals(readFromWriteCartTest.getCartName(), ConstTest.EXPECT_WRITE_CART_NAME);
+    @Test
+    void testWriteToFile() throws IOException {
+        parser.writeToFile(testCart);
+        String actualFileResult = Files.readString(Path.of("src/main/resources/" + TEST_CART_NAME + ".json"));
+        assertEquals(EXPECT_FILE_RESULT, actualFileResult);
     }
 
 }

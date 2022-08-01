@@ -3,23 +3,23 @@ package JUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import shop.VirtualItem;
-import Helpers.ConstTest;
+import static Helpers.Const.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VirtualItemTest {
 
-    private VirtualItem virtualItemTest;
+    private VirtualItem virtualTestItem;
 
     @BeforeEach
-    void prepareVirtualItemTestData(){
-        virtualItemTest = new VirtualItem();
-        virtualItemTest.setSizeOnDisk(ConstTest.EXPECT_SIZE_ON_DISK);
+    void prepareVirtualItemTestData() {
+        virtualTestItem = new VirtualItem();
+        virtualTestItem.setSizeOnDisk(EXPECT_SIZE_ON_DISK);
     }
 
-    @Test()
-    void getSizeOnDiskTest(){
-        assertEquals(virtualItemTest.getSizeOnDisk(), ConstTest.EXPECT_SIZE_ON_DISK);
+    @Test
+    void testToStringSizeOnDisk() {
+        assertTrue(virtualTestItem.toString().contains("Size on disk: " + EXPECT_SIZE_ON_DISK));
     }
 
 }
