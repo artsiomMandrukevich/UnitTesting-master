@@ -1,14 +1,13 @@
-package JUnit;
+package junittests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import shop.VirtualItem;
-import static Helpers.Const.*;
+import static helpers.Const.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VirtualItemTest {
-
     private VirtualItem virtualTestItem;
 
     @BeforeEach
@@ -21,5 +20,4 @@ public class VirtualItemTest {
     void testToStringSizeOnDisk() {
         assertTrue(virtualTestItem.toString().contains("Size on disk: " + EXPECT_SIZE_ON_DISK));
     }
-
 }

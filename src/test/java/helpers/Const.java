@@ -1,11 +1,11 @@
-package Helpers;
+package helpers;
 
 public class Const {
 
     // JsonParserTest
     public static final String PATH_TO_EUGEN_CART_JSON = "src/main/resources/eugen-cart.json";
-    public static final String EXPECT_EUGEN_CART_NAME = "eugen-cart";
-    public static final double EXPECT_EUGEN_TOTAL_PRICE = 26560.68;
+    public static final String EUGEN_CART_NAME = "eugen-cart";
+    public static final double EUGEN_TOTAL_PRICE = 26560.68;
 
     public static final String TEST_CART_NAME = "test-cart";
     public static final String EXPECT_FILE_RESULT = "{\"cartName\":\"test-cart\",\"realItems\":[],\"virtualItems\":[],\"total\":0.0}";

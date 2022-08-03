@@ -1,4 +1,4 @@
-package JUnit;
+package junittests;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import parser.NoSuchFileException;
 import parser.Parser;
 import shop.Cart;
 
-import static Helpers.Const.*;
+import static helpers.Const.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonParserTest {
-
     private Parser parser;
     private Cart testCart;
 
@@ -34,8 +33,8 @@ public class JsonParserTest {
         Cart readCartTest = parser.readFromFile(new File(PATH_TO_EUGEN_CART_JSON));
         assertAll(
                 "readFromFileTest",
-                () -> assertEquals(EXPECT_EUGEN_CART_NAME, readCartTest.getCartName()),
-                () -> assertEquals(EXPECT_EUGEN_TOTAL_PRICE, readCartTest.getTotalPrice())
+                () -> assertEquals(EUGEN_CART_NAME, readCartTest.getCartName()),
+                () -> assertEquals(EUGEN_TOTAL_PRICE, readCartTest.getTotalPrice())
         );
     }
 
@@ -51,5 +50,4 @@ public class JsonParserTest {
         String actualFileResult = Files.readString(Path.of("src/main/resources/" + TEST_CART_NAME + ".json"));
         assertEquals(EXPECT_FILE_RESULT, actualFileResult);
     }
-
 }
