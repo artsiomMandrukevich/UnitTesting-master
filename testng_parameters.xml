@@ -1,9 +1,0 @@
-<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="TestNG Parameter test">
-    <parameter name="expect-size-on-disk" value="512"/>
-    <test name="Parameter">
-        <classes>
-            <class name="testngtests.VirtualItemTest"/>
-        </classes>
-    </test>
-</suite>
