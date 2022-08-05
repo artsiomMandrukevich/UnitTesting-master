@@ -1,21 +1,19 @@
-package junittests;
+package testngtests;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.*;
 import shop.Cart;
 import shop.RealItem;
 import shop.VirtualItem;
 
 import static helpers.Const.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testng.Assert.assertEquals;
 
-public class CartClassTest {
+public class CartTest {
     private Cart testCart;
     private RealItem realTestItem;
     private VirtualItem virtualTestItem;
 
-    @BeforeEach
+    @BeforeGroups("test-group")
     void prepareCartTestData() {
         testCart = new Cart(TEST_CART_NAME);
 
@@ -29,17 +27,16 @@ public class CartClassTest {
         testCart.addRealItem(realTestItem);
     }
 
-    @Test
+    @Test(groups = "test-group")
     void testTotalPrice() {
         testCart.addRealItem(realTestItem);
-        assertEquals(EXPECT_TOTAL_PRICE, testCart.getTotalPrice());
+        assertEquals(testCart.getTotalPrice(), EXPECT_TOTAL_PRICE, "Total prices after adding items do not match");
     }
 
-    @Test
-    @Disabled
+    @Test(groups = "test-group", enabled = false)
     void testDeleteItems() {
         testCart.deleteRealItem(realTestItem);
         testCart.deleteVirtualItem(virtualTestItem);
-        assertEquals(0, testCart.getTotalPrice());
+        assertEquals(testCart.getTotalPrice(), 0, "Total prices after deleting items do not match");
     }
 }

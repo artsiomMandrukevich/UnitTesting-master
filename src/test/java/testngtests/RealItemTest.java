@@ -1,17 +1,16 @@
-package junittests;
+package testngtests;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import shop.RealItem;
 
-import static helpers.Const.*;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static helpers.Const.EXPECT_WEIGHT;
+import static org.testng.Assert.assertTrue;
 
 public class RealItemTest {
     private RealItem realTestItem;
 
-    @BeforeEach
+    @BeforeTest
     void prepareRealItemTestData() {
         realTestItem = new RealItem();
         realTestItem.setWeight(EXPECT_WEIGHT);
