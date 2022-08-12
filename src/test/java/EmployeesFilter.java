@@ -25,7 +25,7 @@ public class EmployeesFilter {
         List<Employee> filteredList = new ArrayList<>();
 
         for (Employee employee : employeeList) {
-            if (employee.getAge() > ageValue && employee.getSalary() > salaryValue)
+            if (employee.getAge() > ageValue && employee.getSalary() <= salaryValue)
                 filteredList.add(employee);
         }
 
@@ -49,6 +49,7 @@ public class EmployeesFilter {
             rowSal.setAge(row[3]);
             rowSal.setStartDate(row[4]);
             rowSal.setSalary(row[5]);
+            listOfEmployees.add(rowSal);
         }
 
         return listOfEmployees;
@@ -75,7 +76,7 @@ public class EmployeesFilter {
 
         List<Employee> listFromWeb = readDataFromWebTable(driver);
 
-        for (Employee finalList : filterEmployeesByAgeAndSallary(listFromWeb, 30, 30000)) {
+        for (Employee finalList : filterEmployeesByAgeAndSallary(listFromWeb, 30, 300000)) {
             System.out.println(finalList.getName() + " " + finalList.getPosition() + " " + finalList.getOffice());
         }
     }
