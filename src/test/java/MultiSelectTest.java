@@ -1,7 +1,7 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,20 +9,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MultiSelectTest {
     private static WebDriver driver;
 
     private static final By MULTI_SELECT = By.name("States");
-    private final List<String> EXP_SELECTED_OPTIONS = Arrays.asList("California", "Ohio", "Pennsylvania");
-    private final List<String> ACT_EXPECTED_OPTIONS = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void startDriver() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         driver = new ChromeDriver();
@@ -31,23 +29,18 @@ public class MultiSelectTest {
     }
 
     @Test
-    public void multiSelect() {
+    public void multiSelectTest() {
         driver.get("https://demo.seleniumeasy.com/basic-select-dropdown-demo.html");
-
         Select multiSelect = new Select(driver.findElement(MULTI_SELECT));
-
-        for (String selectOption : EXP_SELECTED_OPTIONS) {
-            multiSelect.selectByVisibleText(selectOption);
-        }
-
-        for (WebElement option : multiSelect.getAllSelectedOptions()) {
-            ACT_EXPECTED_OPTIONS.add(option.getText());
-        }
-
-        assertArrayEquals(EXP_SELECTED_OPTIONS.toArray(), ACT_EXPECTED_OPTIONS.toArray());
+        List<String> expectedStates = new Random().ints(3, 0, multiSelect.getOptions().size()).boxed()
+                .map(i -> multiSelect.getOptions().get(i).getText()).collect(Collectors.toList());
+        expectedStates.forEach(multiSelect::selectByValue);
+        List<String> selectedStates = multiSelect.getAllSelectedOptions().stream().map(WebElement::getText)
+                .collect(Collectors.toList());
+        assertTrue(expectedStates.containsAll(selectedStates));
     }
 
-    @After
+    @AfterEach
     public void stopDriver() {
         driver.quit();
     }

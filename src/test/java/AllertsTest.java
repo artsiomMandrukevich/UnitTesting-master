@@ -1,20 +1,18 @@
-import helpers.Element;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AllertsTest {
-    Element element = new Element();
-
     private static WebDriver driver;
 
     private static final By ALERT_BOX_BUTTON = By.cssSelector("button[class='btn btn-default']");
@@ -23,7 +21,7 @@ public class AllertsTest {
     private static final By ACTUAL_MESSAGE = By.id("confirm-demo");
     private static final By ACTUAL_PROMPT_MESSAGE = By.id("prompt-demo");
 
-    @Before
+    @BeforeEach
     public void startDriver() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         driver = new ChromeDriver();
@@ -33,48 +31,44 @@ public class AllertsTest {
     }
 
     @Test
-    public void alertBox() {
-        element.clickButton(driver, ALERT_BOX_BUTTON);
-
+    public void alertBoxTest() {
+        WebElement webElement = driver.findElement(ALERT_BOX_BUTTON);
+        webElement.click();
         Alert alert = driver.switchTo().alert();
         assertEquals("I am an alert box!", alert.getText());
-        alert.accept();
     }
 
     @Test
-    public void confirmBoxAccept() {
-        element.clickButton(driver, CONFIRM_BOX_BUTTON);
-
+    public void confirmBoxAcceptTest() {
+        WebElement webElement = driver.findElement(CONFIRM_BOX_BUTTON);
+        webElement.click();
         Alert alert = driver.switchTo().alert();
         assertEquals("Press a button!", alert.getText());
         alert.accept();
-
         assertEquals("You pressed OK!", driver.findElement(ACTUAL_MESSAGE).getText());
     }
 
     @Test
-    public void confirmBoxDissmiss() {
-        element.clickButton(driver, CONFIRM_BOX_BUTTON);
-
+    public void confirmBoxDissmissTest() {
+        WebElement webElement = driver.findElement(CONFIRM_BOX_BUTTON);
+        webElement.click();
         Alert alert = driver.switchTo().alert();
         assertEquals("Press a button!", alert.getText());
         alert.dismiss();
-
         assertEquals("You pressed Cancel!", driver.findElement(ACTUAL_MESSAGE).getText());
     }
 
     @Test
-    public void alertPromtBox() {
-        element.clickButton(driver, ALERT_PROMT_BOX_BUTTON);
-
+    public void alertPromtBoxTest() {
+        WebElement webElement = driver.findElement(ALERT_PROMT_BOX_BUTTON);
+        webElement.click();
         Alert alert = driver.switchTo().alert();
         alert.sendKeys("Test message");
         alert.accept();
-
         assertEquals("You have entered 'Test message' !", driver.findElement(ACTUAL_PROMPT_MESSAGE).getText());
     }
 
-    @After
+    @AfterEach
     public void stopDriver() {
         driver.quit();
     }

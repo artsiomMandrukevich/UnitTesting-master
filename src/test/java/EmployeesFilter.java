@@ -1,11 +1,11 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,43 +19,14 @@ public class EmployeesFilter {
     private static final By SHOW_ENTRIES_SELECTOR = By.cssSelector("select[name='example_length']");
     private static final By SHOWING_ITEMS = By.cssSelector("div[role='status']");
     private static final By TABLE_ROWS = By.xpath("//table/tbody//tr[@role='row']");
-    private static final By TABLE_COLUMNS = By.xpath("//table/thead//th");
+    private static final By SALARY_CELL = By.xpath("td[6]");
+    private static final By AGE_CELL = By.xpath("td[4]");
+    private static final By NAME_CELL = By.xpath("td[1]");
+    private static final By POSITION_CELL = By.xpath("td[2]");
+    private static final By OFFICE_CELL = By.xpath("td[3]");
+    private static final By NEXT_BUTTON = By.cssSelector(".next");
 
-    private List<Employee> filterEmployeesByAgeAndSallary(List<Employee> employeeList, int ageValue, int salaryValue) {
-        List<Employee> filteredList = new ArrayList<>();
-
-        for (Employee employee : employeeList) {
-            if (employee.getAge() > ageValue && employee.getSalary() <= salaryValue)
-                filteredList.add(employee);
-        }
-
-        return filteredList;
-    }
-
-    private List<Employee> readDataFromWebTable(WebDriver driver) {
-        int rowsSize = driver.findElements(TABLE_ROWS).size();
-        int columnsSize = driver.findElements(TABLE_COLUMNS).size();
-        List<Employee> listOfEmployees = new ArrayList<>();
-
-        for (int i = 1; i <= rowsSize; i++) {
-            Employee rowSal = new Employee();
-            String[] row = new String[columnsSize];
-            for (int j = 1; j <= columnsSize; j++) {
-                row[j - 1] = driver.findElement(By.xpath("//tr[" + i + "]/td[" + j + "]")).getText();
-            }
-            rowSal.setName(row[0]);
-            rowSal.setPosition(row[1]);
-            rowSal.setOffice(row[2]);
-            rowSal.setAge(row[3]);
-            rowSal.setStartDate(row[4]);
-            rowSal.setSalary(row[5]);
-            listOfEmployees.add(rowSal);
-        }
-
-        return listOfEmployees;
-    }
-
-    @Before
+    @BeforeEach
     public void startDriver() {
         WebDriverManager.getInstance(ChromeDriver.class).setup();
         driver = new ChromeDriver();
@@ -64,25 +35,41 @@ public class EmployeesFilter {
     }
 
     @Test
-    public void waitForUser() {
+    public void collectEmployees()  {
         driver.get("https://demo.seleniumeasy.com/table-sort-search-demo.html");
-
         Select select = new Select(driver.findElement(SHOW_ENTRIES_SELECTOR));
         select.selectByValue("10");
-
-        new WebDriverWait(driver, Duration.ofSeconds(20))
-                .until((ExpectedCondition<Boolean>) d -> d != null &&
-                        d.findElement(SHOWING_ITEMS).getText().contains("Showing 1 to 10"));
-
-        List<Employee> listFromWeb = readDataFromWebTable(driver);
-
-        for (Employee finalList : filterEmployeesByAgeAndSallary(listFromWeb, 30, 300000)) {
-            System.out.println(finalList.getName() + " " + finalList.getPosition() + " " + finalList.getOffice());
-        }
+        new WebDriverWait(driver, Duration.ofSeconds(30), Duration.ofMillis(50))
+                .until(driver -> driver.findElement(SHOWING_ITEMS).getText().contains("Showing 1 to 10"));
+        List<Employee> listFromWeb = getEmployeeByCondition(30, 300000);
     }
 
-    @After
+    @AfterEach
     public void stopDriver() {
         driver.quit();
+    }
+
+    public List<Employee> getEmployeeByCondition(int minAge, int maxSalary) {
+        List<Employee> employees = new ArrayList<>();
+        do {
+            WebElement nextBtn = driver.findElement(NEXT_BUTTON);
+            collectEmployeesByCondition(minAge, maxSalary, employees);
+            nextBtn.click();
+        } while (!driver.findElement(NEXT_BUTTON).getAttribute("class").contains("disabled"));
+        return employees;
+    }
+
+    public void collectEmployeesByCondition(int minAge, int maxSalary, List<Employee> employees) {
+        List<WebElement> rows = driver.findElements(TABLE_ROWS);
+        rows.forEach(row -> {
+            int salary = Integer.parseInt(row.findElement(SALARY_CELL).getAttribute("data-order"));
+            int age = Integer.parseInt(row.findElement(AGE_CELL).getText());
+            if (age > minAge && salary <= maxSalary) {
+                String name = row.findElement(NAME_CELL).getText();
+                String position = row.findElement(POSITION_CELL).getText();
+                String office = row.findElement(OFFICE_CELL).getText();
+                employees.add(new Employee(name, position, office));
+            }
+        });
     }
 }
