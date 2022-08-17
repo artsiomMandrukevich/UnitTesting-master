@@ -18,6 +18,7 @@ public class SingletoneWebBrowser {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
+        driver.get("https://mail.yandex.com/");
         return driver;
     }
 

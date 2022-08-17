@@ -13,7 +13,7 @@ public class LogInTest {
     SingletoneWebBrowser singletoneWebBrowser = SingletoneWebBrowser.getInstance();
     WebDriver driver;
 
-    private static final String EXPECTED_TITLE = "Yandex.Mail — free, reliable email";
+    private static final String EXPECTED_TITLE = "Authorization";
 
     @BeforeEach
     public void startDriver() {

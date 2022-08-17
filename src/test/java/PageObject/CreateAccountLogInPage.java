@@ -11,7 +11,6 @@ public class CreateAccountLogInPage {
 
     public CreateAccountLogInPage(WebDriver driver) {
         this.driver = driver;
-        this.driver.get("https://mail.yandex.com/");
     }
 
     public LogInPage logInButton() {
