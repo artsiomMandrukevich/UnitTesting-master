@@ -1,35 +1,25 @@
-package PageFactory;
+package page;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class PersonalAccountPage {
-
-    WebDriver driver;
-    WebDriverWait wait;
+public class PersonalAccountPage extends BasePage {
 
     @FindBy(css = "a.user-account_left-name .user-account__name")
     private WebElement USER_ACCOUNT_NAME;
+
     @FindBy(xpath = "//span[text()='Log out']")
     private WebElement LOG_OUT_BUTTON;
 
     public PersonalAccountPage(WebDriver driver) {
-        this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10), Duration.ofMillis(765));
-    }
-
-    public void waitVisibilityOfElement(WebElement element){
-        wait.until(ExpectedConditions.visibilityOf(element));
+        super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public String getUserName() {
-        this.waitVisibilityOfElement(USER_ACCOUNT_NAME);
+        waiter.waitForElementVisibility(USER_ACCOUNT_NAME);
         return USER_ACCOUNT_NAME.getText();
     }
 
@@ -41,9 +31,9 @@ public class PersonalAccountPage {
         LOG_OUT_BUTTON.click();
     }
 
-    public CreateAccountLogInPage logOut() {
+    public HomePage logOut() {
         this.clickUserName();
         this.clickLogOut();
-        return PageFactory.initElements(driver, CreateAccountLogInPage.class);
+        return new HomePage(driver);
     }
 }

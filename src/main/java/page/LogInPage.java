@@ -1,23 +1,24 @@
-package PageFactory;
+package page;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LogInPage {
-
-    WebDriver driver;
+public class LogInPage extends BasePage {
 
     @FindBy(id = "passp-field-login")
     private WebElement USERNAME_INPUT;
+
     @FindBy(xpath = "//button[@id='passp:sign-in']")
     private WebElement SIGNIN_BUTTON;
+
     @FindBy(id = "passp-field-passwd")
     private WebElement PASSWORD_INPUT;
 
     public LogInPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public void enterUserName(String userName) {
@@ -32,11 +33,11 @@ public class LogInPage {
         SIGNIN_BUTTON.click();
     }
 
-    public PersonalAccountPage loginIntoPersonalAccount(String userName, String password) {
+    public PersonalAccountPage logIn(String userName, String password) {
         enterUserName(userName);
         clickSignInButton();
         enterPassword(password);
         clickSignInButton();
-        return PageFactory.initElements(driver, PersonalAccountPage.class);
+        return new PersonalAccountPage(driver);
     }
 }

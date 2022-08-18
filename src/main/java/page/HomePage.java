@@ -1,27 +1,26 @@
-package PageFactory;
+package page;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class CreateAccountLogInPage {
-
-    WebDriver driver;
+public class HomePage extends BasePage {
 
     @FindBy(linkText = "Log in")
     private WebElement LOGIN_BUTTON;
 
-    public CreateAccountLogInPage(WebDriver driver) {
-        this.driver = driver;
+    public HomePage(WebDriver driver) {
+        super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public String getTitle() {
         return driver.getTitle();
     }
 
-    public LogInPage logInButton() {
+    public LogInPage clicklogInButton() {
         LOGIN_BUTTON.click();
-        return PageFactory.initElements(driver, LogInPage.class);
+        return new LogInPage(driver);
     }
 }
