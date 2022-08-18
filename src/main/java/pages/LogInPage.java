@@ -1,18 +1,16 @@
-package PageObject;
+package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LogInPage {
-
-    WebDriver driver;
+public class LogInPage extends HomePage {
 
     private static final By USERNAME_INPUT = By.id("passp-field-login");
     private static final By SIGNIN_BUTTON = By.xpath("//button[@id='passp:sign-in']");
     private static final By PASSWORD_INPUT = By.id("passp-field-passwd");
 
     public LogInPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public void enterUserName(String userName) {
@@ -27,7 +25,7 @@ public class LogInPage {
         driver.findElement(SIGNIN_BUTTON).click();
     }
 
-    public PersonalAccountPage loginIntoPersonalAccount(String userName, String password) {
+    public PersonalAccountPage loginToPersonalArea(String userName, String password) {
         enterUserName(userName);
         clickSignInButton();
         enterPassword(password);

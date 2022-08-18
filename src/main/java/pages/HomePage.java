@@ -1,19 +1,17 @@
-package PageObject;
+package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class CreateAccountLogInPage {
-
-    WebDriver driver;
+public class HomePage extends BasePage {
 
     private static final By LOGIN_BUTTON = By.linkText("Log in");
 
-    public CreateAccountLogInPage(WebDriver driver) {
-        this.driver = driver;
+    public HomePage(WebDriver driver) {
+        super(driver);
     }
 
-    public LogInPage logInButton() {
+    public LogInPage clicklogInButton() {
         driver.findElement(LOGIN_BUTTON).click();
         return new LogInPage(driver);
     }
