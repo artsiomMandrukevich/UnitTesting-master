@@ -25,7 +25,7 @@ public class LogInPage extends HomePage {
         driver.findElement(SIGNIN_BUTTON).click();
     }
 
-    public PersonalAccountPage loginToPersonalArea(String userName, String password) {
+    public PersonalAccountPage logIn(String userName, String password) {
         enterUserName(userName);
         clickSignInButton();
         enterPassword(password);

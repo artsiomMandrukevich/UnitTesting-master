@@ -15,7 +15,7 @@ public class LogInTest extends BaseTest {
     private static final String EXPECTED_TITLE = "Yandex.Mail — free, reliable email";
 
     @BeforeEach
-    public void startDriver() {
+    public void testPreparartion() {
         homepage = new HomePage(driver);
         logInPage = homepage.clicklogInButton();
     }
@@ -24,7 +24,7 @@ public class LogInTest extends BaseTest {
     @CsvSource({"testtestovt3stov, asdHygsad123", "testselenium202208, vMQGe25UrcksBtj"})
     public void logInTest(String username, String password) {
         PersonalAccountPage personalAccountPage = logInPage
-                .loginToPersonalArea(username, password);
+                .logIn(username, password);
         assertEquals(username, personalAccountPage.getUserName());
     }
 
@@ -32,7 +32,7 @@ public class LogInTest extends BaseTest {
     @CsvSource({"testtestovt3stov, asdHygsad123", "testselenium202208, vMQGe25UrcksBtj"})
     public void logOutTest(String username, String password) {
         String actualTitle = logInPage
-                .loginToPersonalArea(username, password)
+                .logIn(username, password)
                 .logOut().getTitle();
         assertEquals(actualTitle, EXPECTED_TITLE);
     }
