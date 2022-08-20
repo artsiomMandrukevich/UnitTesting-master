@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 public class HomePage extends BasePage {
 
     @FindBy(linkText = "Log in")
-    private WebElement LOGIN_BUTTON;
+    private WebElement loginButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -20,7 +20,7 @@ public class HomePage extends BasePage {
     }
 
     public LogInPage clicklogInButton() {
-        LOGIN_BUTTON.click();
+        loginButton.click();
         return new LogInPage(driver);
     }
 }

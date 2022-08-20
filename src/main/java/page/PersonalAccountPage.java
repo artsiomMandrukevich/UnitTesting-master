@@ -8,10 +8,10 @@ import org.openqa.selenium.support.PageFactory;
 public class PersonalAccountPage extends BasePage {
 
     @FindBy(css = "a.user-account_left-name .user-account__name")
-    private WebElement USER_ACCOUNT_NAME;
+    private WebElement userAccountName;
 
     @FindBy(xpath = "//span[text()='Log out']")
-    private WebElement LOG_OUT_BUTTON;
+    private WebElement logOutButton;
 
     public PersonalAccountPage(WebDriver driver) {
         super(driver);
@@ -19,16 +19,16 @@ public class PersonalAccountPage extends BasePage {
     }
 
     public String getUserName() {
-        waiter.waitForElementVisibility(USER_ACCOUNT_NAME);
-        return USER_ACCOUNT_NAME.getText();
+        waiter.waitForElementVisibility(userAccountName);
+        return userAccountName.getText();
     }
 
     public void clickUserName() {
-        USER_ACCOUNT_NAME.click();
+        userAccountName.click();
     }
 
     public void clickLogOut() {
-        LOG_OUT_BUTTON.click();
+        logOutButton.click();
     }
 
     public HomePage logOut() {

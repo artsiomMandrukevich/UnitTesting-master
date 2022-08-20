@@ -8,13 +8,13 @@ import org.openqa.selenium.support.PageFactory;
 public class LogInPage extends BasePage {
 
     @FindBy(id = "passp-field-login")
-    private WebElement USERNAME_INPUT;
+    private WebElement usernameInput;
 
     @FindBy(xpath = "//button[@id='passp:sign-in']")
-    private WebElement SIGNIN_BUTTON;
+    private WebElement signInButton;
 
     @FindBy(id = "passp-field-passwd")
-    private WebElement PASSWORD_INPUT;
+    private WebElement passwordInput;
 
     public LogInPage(WebDriver driver) {
         super(driver);
@@ -22,15 +22,15 @@ public class LogInPage extends BasePage {
     }
 
     public void enterUserName(String userName) {
-        USERNAME_INPUT.sendKeys(userName);
+        usernameInput.sendKeys(userName);
     }
 
     public void enterPassword(String password) {
-        PASSWORD_INPUT.sendKeys(password);
+        passwordInput.sendKeys(password);
     }
 
     public void clickSignInButton() {
-        SIGNIN_BUTTON.click();
+        signInButton.click();
     }
 
     public PersonalAccountPage logIn(String userName, String password) {
