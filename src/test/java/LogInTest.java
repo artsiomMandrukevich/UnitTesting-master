@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LogInTest extends BaseTest {
@@ -15,7 +17,7 @@ public class LogInTest extends BaseTest {
     private static final String EXPECTED_TITLE = "Yandex.Mail — free, reliable email";
 
     @BeforeEach
-    public void testPreparartion() {
+    public void testPreparartion() throws IOException {
         homepage = new HomePage(driver);
         logInPage = homepage.clicklogInButton();
     }
