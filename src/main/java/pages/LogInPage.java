@@ -1,9 +1,10 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LogInPage extends HomePage {
+public class LogInPage extends BasePage {
 
     private static final By USERNAME_INPUT = By.id("passp-field-login");
     private static final By SIGNIN_BUTTON = By.xpath("//button[@id='passp:sign-in']");
@@ -25,6 +26,7 @@ public class LogInPage extends HomePage {
         driver.findElement(SIGNIN_BUTTON).click();
     }
 
+    @Step("Fill out credentials, log in into the personal area")
     public PersonalAccountPage logIn(String userName, String password) {
         enterUserName(userName);
         clickSignInButton();
@@ -32,4 +34,5 @@ public class LogInPage extends HomePage {
         clickSignInButton();
         return new PersonalAccountPage(driver);
     }
+
 }
