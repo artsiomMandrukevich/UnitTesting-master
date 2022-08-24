@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 
 public class PersonalAccountPage extends BasePage {
 
-    private static final By USER_ACCOUNT_NAME = By.cssSelector("a.user-account_left-name .user-account__name");
+    private static final By USER_ACCOUNT_NAME = By.xpath("//a[@href='https://passport.yandex.com']/div[@class='user-pic user-pic_has-plus_ user-account__pic']");
     private static final By LOG_OUT_BUTTON = By.xpath("//span[text()='Log out']");
 
     public PersonalAccountPage(WebDriver driver) {
@@ -28,6 +28,7 @@ public class PersonalAccountPage extends BasePage {
 
     @Step("Click Log Out button")
     public HomePage logOut() {
+        waiter.waitForElementVisibility(USER_ACCOUNT_NAME);
         this.clickUserName();
         this.clickLogOut();
         return new HomePage(driver);
