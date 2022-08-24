@@ -12,7 +12,7 @@ public class AllureTestWatcher implements TestWatcher {
     @Override
     public void testFailed(ExtensionContext extensionContext, Throwable throwable) {
         if (extensionContext.getExecutionException().isPresent()) {
-            Allure.addAttachment("Browser info ", browserInfo);
+//            Allure.addAttachment("Browser info ", browserInfo);
             Allure.addByteAttachmentAsync(
                     "Page screenshot",
                     "image/png",

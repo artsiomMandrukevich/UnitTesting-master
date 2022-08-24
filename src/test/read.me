@@ -1,0 +1,14 @@
+
+How to use SeleniumGrid
+https://www.youtube.com/watch?v=P5CLXIC7x5c
+
+1. https://www.selenium.dev/documentation/grid/getting_started/
+2. Download drivers, put them into path. Or you can put them in the same location of selenium server
+3. Run hub
+java -jar selenium-server-4.4.0.jar hub
+4. Run node on local machine
+java -jar selenium-server-4.4.0.jar node --detect-drivers true
+5. Virtual machine
+5.1. Download drivers, put them into path. Or you can put them in the same location of selenium server
+5.2. Run node on wirtual machine
+java -jar selenium-server-4.4.0.jar node --detect-drivers true --publish-events tcp://192.168.1.11:4442 --subscribe-events tcp://192.168.1.11:4443
