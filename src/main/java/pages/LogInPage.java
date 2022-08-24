@@ -4,8 +4,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class LogInPage extends BasePage {
 
     private static final By USERNAME_INPUT = By.id("passp-field-login");
@@ -37,8 +35,4 @@ public class LogInPage extends BasePage {
         return new PersonalAccountPage(driver);
     }
 
-    @Step("Check the log out happened correctly (comparing titles)")
-    public void assertTitleAfterLogOut(String actTitle, String expTitle) {
-        assertEquals(actTitle, expTitle);
-    }
 }

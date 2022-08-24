@@ -4,8 +4,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class PersonalAccountPage extends BasePage {
 
     private static final By USER_ACCOUNT_NAME = By.cssSelector("a.user-account_left-name .user-account__name");
@@ -26,11 +24,6 @@ public class PersonalAccountPage extends BasePage {
 
     public void clickLogOut() {
         driver.findElement(LOG_OUT_BUTTON).click();
-    }
-
-    @Step("Check actualUserAccountName =  expectedUserAccountName")
-    public void assertUserAccountName(String actName, String expName) {
-        assertEquals(actName, expName);
     }
 
     @Step("Click Log Out button")

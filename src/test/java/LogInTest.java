@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class LogInTest extends BaseTest {
 
     private HomePage homepage;
@@ -32,7 +34,7 @@ public class LogInTest extends BaseTest {
     public void logInTest(String username, String password) {
         PersonalAccountPage personalAccountPage = logInPage
                 .logIn(username, password);
-        personalAccountPage.assertUserAccountName(username, personalAccountPage.getUserName());
+        assertEquals(username, personalAccountPage.getUserName());
     }
 
     @Feature("LOG OUT GROUP")
@@ -45,6 +47,6 @@ public class LogInTest extends BaseTest {
         String actualTitle = logInPage
                 .logIn(username, password)
                 .logOut().getTitle();
-        logInPage.assertTitleAfterLogOut(actualTitle, EXPECTED_TITLE);
+        assertEquals(actualTitle, EXPECTED_TITLE);
     }
 }
