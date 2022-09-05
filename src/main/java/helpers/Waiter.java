@@ -20,4 +20,16 @@ public class Waiter {
                 ExpectedConditions.visibilityOfElementLocated(element)
         );
     }
+
+    public void waitNumberOfElementsToBe(By element, int number) {
+        new WebDriverWait(driver, Duration.ofSeconds(20), Duration.ofMillis(765)).until(
+                ExpectedConditions.numberOfElementsToBe(element, number)
+        );
+    }
+
+    public void waitForElementToBeClickable(By element) {
+        new WebDriverWait(driver, Duration.ofSeconds(10), Duration.ofMillis(765)).until(
+                ExpectedConditions.invisibilityOfElementLocated(element)
+        );
+    }
 }

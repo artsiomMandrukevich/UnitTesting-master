@@ -1,0 +1,26 @@
+[
+  {
+    "personalInfo": {
+      "firstName": "Alex",
+      "lastName": "Testov",
+      "email" : "testemail@test.co",
+      "password": "myPassword",
+      "dayBirthday": "5",
+      "monthBirthday": "11",
+      "yearBirthday": "1980"
+    },
+    "addressInfo": {
+      "company": "Tesla company",
+      "addressLine1": "1 E 118th",
+      "addressLine2": "2/3",
+      "city": "New York",
+      "state": "New York",
+      "zipCode": "11103",
+      "mobilePhone": "1234567890",
+      "alias": "test alias"
+    },
+    "expectedResult": {
+      "accountName": "Alex Testov"
+    }
+  }
+]

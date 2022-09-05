@@ -10,6 +10,11 @@
 
     <properties>
         <aspectj.version>1.9.9.1</aspectj.version>
+        <browser>browser</browser>
+        <server>server</server>
+        <url_grid>url_grid</url_grid>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <build>
@@ -17,9 +22,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
 
@@ -54,7 +60,6 @@
                     <reportVersion>2.17.0</reportVersion>
                 </configuration>
             </plugin>
-
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
@@ -76,7 +81,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.2.3</version>
+            <version>5.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -92,6 +97,21 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>2.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.joshka</groupId>
+            <artifactId>junit-json-params</artifactId>
+            <version>5.6.2-r0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>4.4.0</version>
         </dependency>
     </dependencies>
 
