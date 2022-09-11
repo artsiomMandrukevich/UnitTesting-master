@@ -1,109 +1,97 @@
 import base.BaseTest;
+import dto.UserAccount;
 import helpers.Helper;
-import net.joshka.junit.json.params.JsonFileSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.api.Test;
 import pages.*;
+import store.Product;
 
-import javax.json.JsonObject;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CartTest extends BaseTest {
 
     private HomePage homepage;
-    private final Helper helper = new Helper();
+    private Helper helper = new Helper();
+    private final int createUserAccountIndex = 0;
+    private final int logInUserAccountIndex = 1;
 
     @BeforeEach
-    public void testPreparartion() {
+    public void testPreparation() {
         homepage = new HomePage(driver);
     }
 
-    @ParameterizedTest
-    @JsonFileSource(resources = "/dataset/testCreateAccount.json")
+    @Test
     @DisplayName("Verify the ability to create an account")
-    public void createAccountTest(JsonObject jsonObject) {
-        String firstName = jsonObject.getJsonObject("personalInfo").getString("firstName");
-        String lastName = jsonObject.getJsonObject("personalInfo").getString("lastName");
-        String email = helper.getPrefixByDate() + jsonObject.getJsonObject("personalInfo").getString("email");
-        String password = jsonObject.getJsonObject("personalInfo").getString("password");
-        String addressLine1 = jsonObject.getJsonObject("addressInfo").getString("addressLine1");
-        String city = jsonObject.getJsonObject("addressInfo").getString("city");
-        String state = jsonObject.getJsonObject("addressInfo").getString("state");
-        String zipCode = jsonObject.getJsonObject("addressInfo").getString("zipCode");
-        String mobilePhone = jsonObject.getJsonObject("addressInfo").getString("mobilePhone");
-        String alias = jsonObject.getJsonObject("addressInfo").getString("alias");
-        String accountNameExp = jsonObject.getJsonObject("expectedResult").getString("accountName");
-        CreateAccountPage createAccountPage = homepage.fillOutEmailClickCreateAccountButton(email);
-        createAccountPage.fillOutPersonalInfo(firstName, lastName, password);
-        createAccountPage.fillOutAddressInfo(addressLine1, city, state, zipCode, mobilePhone, alias);
+    public void createAccountTest() {
+        UserAccount userAccount = helper.getUserAccountByIndex(createUserAccountIndex);
+        CreateAccountPage createAccountPage = homepage.createAccount(helper.getPrefixByDate() + userAccount.getEmail());
+        createAccountPage.fillOutPersonalInfo(userAccount);
+        createAccountPage.fillOutAddressInfo(userAccount);
         MyAccountPage myAccountPage = createAccountPage.clickRegisterButton();
-        assertEquals(accountNameExp, myAccountPage.getAccountName());
+        assertTrue(myAccountPage.getAccountName().contains(userAccount.getFirstName()));
     }
 
-    @ParameterizedTest
-    @JsonFileSource(resources = "/dataset/testAccount.json")
+    @Test
     @DisplayName("Verify the ability to login in account")
-    public void logInTest(JsonObject jsonObject) {
-        String email = jsonObject.getJsonObject("personalInfo").getString("email");
-        String password = jsonObject.getJsonObject("personalInfo").getString("password");
-        String accountNameExp = jsonObject.getJsonObject("expectedResult").getString("accountName");
-        MyAccountPage myAccountPage = homepage.fillOutCredentialsClickSignInButton(email, password);
-        assertEquals(accountNameExp, myAccountPage.getAccountName());
+    public void logInTest() {
+        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        MyAccountPage myAccountPage = homepage.logIn(userAccount);
+        assertTrue(myAccountPage.getAccountName().contains(userAccount.getFirstName()));
     }
 
-    @ParameterizedTest
-    @JsonFileSource(resources = "/dataset/testAccount.json")
+    @Test
     @DisplayName("Verify the ability to add to auto-created Wishlist")
-    public void autoCreatedWishListTest(JsonObject jsonObject) {
-        String email = jsonObject.getJsonObject("personalInfo").getString("email");
-        String password = jsonObject.getJsonObject("personalInfo").getString("password");
-        MyAccountPage myAccountPage = homepage.fillOutCredentialsClickSignInButton(email, password);
-        boolean actualResult = myAccountPage
-                .goToMyWishListPage()
+    public void autoCreatedWishListTest() {
+        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        MyAccountPage myAccountPage = homepage.logIn(userAccount);
+        MyWishListPage myWishListPage = myAccountPage.goToMyWishListPage();
+        ProductPage productPage = myWishListPage
                 .ensureWishListsIsEmpty()
-                .goToProductDetailPage()
+                .goToProductDetailPage();
+        myWishListPage = productPage
                 .addProductToWishList()
                 .goToMyAccountPage()
-                .goToMyWishListPage()
-                .checkProductWasAddedToWishList();
+                .goToMyWishListPage();
+        boolean actualResult = myWishListPage.checkProductWasAddedToWishList();
         assertTrue(actualResult);
     }
 
-    @ParameterizedTest
-    @JsonFileSource(resources = "/dataset/testAccount.json")
+    @Test
     @DisplayName("Verify the ability to add to your Wishlist")
-    public void addProductToYourWishListTest(JsonObject jsonObject) {
-        String email = jsonObject.getJsonObject("personalInfo").getString("email");
-        String password = jsonObject.getJsonObject("personalInfo").getString("password");
-        MyAccountPage myAccountPage = homepage.fillOutCredentialsClickSignInButton(email, password);
-        boolean actualResult = myAccountPage
+    public void addProductToYourWishListTest() {
+        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        MyAccountPage myAccountPage = homepage.logIn(userAccount);
+        MyWishListPage myWishListPage = myAccountPage
                 .goToMyWishListPage()
                 .ensureWishListsIsEmpty()
-                .createWishList()
+                .createWishList();
+        ProductPage productPage = myWishListPage
                 .goToProductDetailPage()
-                .addProductToWishList()
+                .addProductToWishList();
+        myWishListPage = productPage
                 .goToMyAccountPage()
-                .goToMyWishListPage()
-                .checkProductWasAddedToWishList();
+                .goToMyWishListPage();
+        boolean actualResult = myWishListPage.checkProductWasAddedToWishList();
         assertTrue(actualResult);
     }
 
-    @ParameterizedTest
-    @JsonFileSource(resources = "/dataset/testAccount.json")
+    @Test
     @DisplayName("Verify the ability to add to cart")
-    public void addProductToCartTest(JsonObject jsonObject) {
-        String email = jsonObject.getJsonObject("personalInfo").getString("email");
-        String password = jsonObject.getJsonObject("personalInfo").getString("password");
-        MyAccountPage myAccountPage = homepage.fillOutCredentialsClickSignInButton(email, password);
-        boolean actualResult = myAccountPage
-                .goToWomenCategoryPage()
-                .addProductToCart()
-                .goToCartPage()
-                .comparePriceAndProductsInCart();
-        assertTrue(actualResult);
+    public void addProductToCartTest() {
+        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        MyAccountPage myAccountPage = homepage.logIn(userAccount);
+        StorePage storePage = myAccountPage
+                .goToStorePage()
+                .switchListView();
+        Product firstProduct = storePage.addRandomProductToCart();
+        Product secondProduct = storePage.addRandomProductToCart();
+        Product thirdProduct = storePage.addRandomProductToCart();
+        CartPage cartPage = storePage.goToCartPage();
+        assertTrue(cartPage.checkProduct(firstProduct));
+        assertTrue(cartPage.checkProduct(secondProduct));
+        assertTrue(cartPage.checkProduct(thirdProduct));
+        assertTrue(cartPage.checkTotalPrice());
     }
 }

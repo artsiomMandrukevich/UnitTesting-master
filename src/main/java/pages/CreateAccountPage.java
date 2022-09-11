@@ -1,5 +1,6 @@
 package pages;
 
+import dto.UserAccount;
 import helpers.Element;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -27,22 +28,21 @@ public class CreateAccountPage extends BasePage {
     }
 
     @Step("Fill out the Personal Info")
-    public void fillOutPersonalInfo(String firstName, String lastName, String password) {
-        element.sendKeys(FIRST_NAME_PERSONAL_INPUT, firstName);
-        element.sendKeys(LAST_NAME_PERSONAL_INPUT, lastName);
-        element.sendKeys(PASSWORD_INPUT, password);
+    public void fillOutPersonalInfo(UserAccount userAccount) {
+        element.sendKeys(FIRST_NAME_PERSONAL_INPUT, userAccount.getFirstName());
+        element.sendKeys(LAST_NAME_PERSONAL_INPUT, userAccount.getLastName());
+        element.sendKeys(PASSWORD_INPUT, userAccount.getPassword());
     }
 
     @Step("Fill out the Address Info")
-    public void fillOutAddressInfo(String addressLineFirst, String city, String state,
-                                   String zipCode, String mobilePhone, String alias) {
-        element.sendKeys(ADDRESS_LINE_1_INPUT, addressLineFirst);
-        element.sendKeys(CITY_INPUT, city);
-        element.selectByVisibleText(STATE_SELECT, state);
-        element.sendKeys(ZIP_CODE_INPUT, zipCode);
-        element.sendKeys(MOBILE_PHONE_INPUT, mobilePhone);
+    public void fillOutAddressInfo(UserAccount userAccount) {
+        element.sendKeys(ADDRESS_LINE_1_INPUT, userAccount.getAddressLine1());
+        element.sendKeys(CITY_INPUT, userAccount.getCity());
+        element.selectByVisibleText(STATE_SELECT, userAccount.getState());
+        element.sendKeys(ZIP_CODE_INPUT, userAccount.getZipCode());
+        element.sendKeys(MOBILE_PHONE_INPUT, userAccount.getMobilePhone());
         element.clearInput(ALIAS_INPUT);
-        element.sendKeys(ALIAS_INPUT, alias);
+        element.sendKeys(ALIAS_INPUT, userAccount.getAlias());
     }
 
     @Step("Click Register button")

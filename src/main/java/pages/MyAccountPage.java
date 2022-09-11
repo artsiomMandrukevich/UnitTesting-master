@@ -26,8 +26,8 @@ public class MyAccountPage extends BasePage {
     }
 
     @Step("Go to Women Category page")
-    public WomenCategoryPage goToWomenCategoryPage() {
+    public StorePage goToStorePage() {
         driver.findElement(WOMEN_CATEGORY_LINK).click();
-        return new WomenCategoryPage(driver);
+        return new StorePage(driver);
     }
 }

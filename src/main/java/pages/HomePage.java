@@ -1,5 +1,6 @@
 package pages;
 
+import dto.UserAccount;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -38,16 +39,16 @@ public class HomePage extends BasePage {
     }
 
     @Step("Fill out email, click Create Account button")
-    public CreateAccountPage fillOutEmailClickCreateAccountButton(String email) {
+    public CreateAccountPage createAccount(String email) {
         fillOutCreateAccountEmail(email);
         clickCreateAccountButton();
         return new CreateAccountPage(driver);
     }
 
     @Step("Fill out email/password, click Sign in button")
-    public MyAccountPage fillOutCredentialsClickSignInButton(String email, String password) {
-        fillOutSignInEmail(email);
-        fillOutSignInPassword(password);
+    public MyAccountPage logIn(UserAccount userAccount) {
+        fillOutSignInEmail(userAccount.getEmail());
+        fillOutSignInPassword(userAccount.getPassword());
         clickSignInButton();
         return new MyAccountPage(driver);
     }
