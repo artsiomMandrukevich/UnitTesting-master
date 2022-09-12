@@ -9,13 +9,13 @@ public class ProductPage extends BasePage {
     private static final By ADD_TO_WISHLIST_BUTTON = By.cssSelector("#wishlist_button");
     private static final By CLOSE_NOTIFICATION_BUTTON = By.cssSelector("a[title='Close']");
     private static final By FANCY_BOX_OVERLAY = By.cssSelector(".fancybox-overlay-fixed");
-    private static final By GO_TO_MY_ACCOUNT_BUTTON = By.xpath("//nav/div[@class='header_user_info'][1]");
+    private static final By GO_TO_MY_ACCOUNT_BUTTON = By.cssSelector(".header_user_info a.account");
 
     public ProductPage(WebDriver driver) {
         super(driver);
     }
 
-    public void clickAddToWishListButton() {
+    public void clickAddToWishList() {
         driver.findElement(ADD_TO_WISHLIST_BUTTON).click();
     }
 
@@ -25,7 +25,7 @@ public class ProductPage extends BasePage {
 
     @Step("Add product to WishList")
     public ProductPage addProductToWishList() {
-        clickAddToWishListButton();
+        clickAddToWishList();
         closeNotificationWindow();
         return this;
     }

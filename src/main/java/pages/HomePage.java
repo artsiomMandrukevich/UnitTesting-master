@@ -18,38 +18,38 @@ public class HomePage extends BasePage {
         super(driver);
     }
 
-    public void fillOutCreateAccountEmail(String email) {
+    public void fillCreateAccountEmail(String email) {
         driver.findElement(EMAIL_CREATE_ACCOUNT_INPUT).sendKeys(email);
     }
 
-    public void fillOutSignInEmail(String email) {
+    public void fillSignInEmail(String email) {
         driver.findElement(EMAIL_SIGNIN_INPUT).sendKeys(email);
     }
 
-    public void fillOutSignInPassword(String password) {
+    public void fillSignInPassword(String password) {
         driver.findElement(PASSWORD_SIGNIN_INPUT).sendKeys(password);
     }
 
-    public void clickSignInButton() {
+    public void clickLogIn() {
         driver.findElement(SIGNIN_BUTTON).click();
     }
 
-    public void clickCreateAccountButton() {
+    public void clickCreateAccount() {
         driver.findElement(CREATE_ACCOUNT_BUTTON).click();
     }
 
     @Step("Fill out email, click Create Account button")
     public CreateAccountPage createAccount(String email) {
-        fillOutCreateAccountEmail(email);
-        clickCreateAccountButton();
+        fillCreateAccountEmail(email);
+        clickCreateAccount();
         return new CreateAccountPage(driver);
     }
 
     @Step("Fill out email/password, click Sign in button")
     public MyAccountPage logIn(UserAccount userAccount) {
-        fillOutSignInEmail(userAccount.getEmail());
-        fillOutSignInPassword(userAccount.getPassword());
-        clickSignInButton();
+        fillSignInEmail(userAccount.getEmail());
+        fillSignInPassword(userAccount.getPassword());
+        clickLogIn();
         return new MyAccountPage(driver);
     }
 }

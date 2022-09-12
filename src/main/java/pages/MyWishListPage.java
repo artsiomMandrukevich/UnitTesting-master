@@ -11,13 +11,13 @@ import java.util.List;
 
 public class MyWishListPage extends BasePage {
 
-    private static final String NAME_OF_YOUR_WISHLIST = "IsSoft wishlist";
-    private static final By NAME_WISHLIST_INPUT = By.cssSelector("#name");
-    private static final By SAVE_WISHLIST_BUTTON = By.cssSelector("#submitWishlist");
+    private static final String NAME_WISHLIST = "IsSoft wishlist";
+    private static final By RANDOM_PRODUCT_LINK = By.cssSelector(".block_content .products-block a");
     private static final By WISHLIST_TABLE_ROWS = By.xpath("//tbody//tr");
-    private static final By QTY_PRODUCT_CELL = By.xpath("//tbody//tr[1]/td[2]");
-    private static final By REMOVE_WISHLIST_ICON = By.xpath("//tbody/tr/td[@class='wishlist_delete']/a");
-    private static final By RANDOM_PRODUCT_LINK = By.xpath("//ul[@class='block_content products-block']/li[1]/a");
+    private static final By WISHLIST_NAME_INPUT = By.cssSelector("#name");
+    private static final By WISHLIST_QTY_PRODUCTS = By.cssSelector(".bold");
+    private static final By WISHLIST_REMOVE_ICON = By.cssSelector(".wishlist_delete a");
+    private static final By WISHLIST_SAVE_BUTTON = By.cssSelector("#submitWishlist");
 
     Waiter waiter = new Waiter(driver);
 
@@ -25,25 +25,25 @@ public class MyWishListPage extends BasePage {
         super(driver);
     }
 
-    public void fillOutNameOfYourWishList() {
-        driver.findElement(NAME_WISHLIST_INPUT).sendKeys(NAME_OF_YOUR_WISHLIST);
+    public void fillName() {
+        driver.findElement(WISHLIST_NAME_INPUT).sendKeys(NAME_WISHLIST);
     }
 
-    public void clickSaveWishList() {
-        driver.findElement(SAVE_WISHLIST_BUTTON).click();
+    public void clickSave() {
+        driver.findElement(WISHLIST_SAVE_BUTTON).click();
     }
 
-    public int getCountRowsOfWishLists() {
+    public int getWishListsCount() {
         List<WebElement> rows = driver.findElements(WISHLIST_TABLE_ROWS);
         return rows.size();
     }
 
-    public int getCountQTYProductForFirstRow() {
-        return Integer.parseInt(driver.findElement(QTY_PRODUCT_CELL).getText());
+    public int getWishListsQTY() {
+        return Integer.parseInt(driver.findElement(WISHLIST_QTY_PRODUCTS).getText());
     }
 
     public void removeItemFromWishList() {
-        driver.findElement(REMOVE_WISHLIST_ICON).click();
+        driver.findElement(WISHLIST_REMOVE_ICON).click();
     }
 
     @Step("Ensure that the WishList is empty. Remove rows is needed.")
@@ -67,14 +67,14 @@ public class MyWishListPage extends BasePage {
 
     @Step("Create My WishList")
     public MyWishListPage createWishList() {
-        fillOutNameOfYourWishList();
-        clickSaveWishList();
+        fillName();
+        clickSave();
         waiter.waitNumberOfElementsToBe(WISHLIST_TABLE_ROWS, 1);
         return this;
     }
 
     @Step("Check the product was added to WishList")
     public boolean checkProductWasAddedToWishList() {
-        return getCountRowsOfWishLists() == 1 && getCountQTYProductForFirstRow() == 1;
+        return getWishListsCount() == 1 && getWishListsQTY() == 1;
     }
 }

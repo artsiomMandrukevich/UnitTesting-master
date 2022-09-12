@@ -27,9 +27,9 @@ public class CartTest extends BaseTest {
     public void createAccountTest() {
         UserAccount userAccount = helper.getUserAccountByIndex(createUserAccountIndex);
         CreateAccountPage createAccountPage = homepage.createAccount(helper.getPrefixByDate() + userAccount.getEmail());
-        createAccountPage.fillOutPersonalInfo(userAccount);
-        createAccountPage.fillOutAddressInfo(userAccount);
-        MyAccountPage myAccountPage = createAccountPage.clickRegisterButton();
+        createAccountPage.fillPersonalInfo(userAccount);
+        createAccountPage.fillAddressInfo(userAccount);
+        MyAccountPage myAccountPage = createAccountPage.clickRegister();
         assertTrue(myAccountPage.getAccountName().contains(userAccount.getFirstName()));
     }
 
@@ -54,8 +54,7 @@ public class CartTest extends BaseTest {
                 .addProductToWishList()
                 .goToMyAccountPage()
                 .goToMyWishListPage();
-        boolean actualResult = myWishListPage.checkProductWasAddedToWishList();
-        assertTrue(actualResult);
+        assertTrue(myWishListPage.checkProductWasAddedToWishList());
     }
 
     @Test
@@ -73,8 +72,7 @@ public class CartTest extends BaseTest {
         myWishListPage = productPage
                 .goToMyAccountPage()
                 .goToMyWishListPage();
-        boolean actualResult = myWishListPage.checkProductWasAddedToWishList();
-        assertTrue(actualResult);
+        assertTrue(myWishListPage.checkProductWasAddedToWishList());
     }
 
     @Test
@@ -89,9 +87,9 @@ public class CartTest extends BaseTest {
         Product secondProduct = storePage.addRandomProductToCart();
         Product thirdProduct = storePage.addRandomProductToCart();
         CartPage cartPage = storePage.goToCartPage();
-        assertTrue(cartPage.checkProduct(firstProduct));
-        assertTrue(cartPage.checkProduct(secondProduct));
-        assertTrue(cartPage.checkProduct(thirdProduct));
-        assertTrue(cartPage.checkTotalPrice());
+        assertTrue(cartPage.checkProductPrice(firstProduct));
+        assertTrue(cartPage.checkProductPrice(secondProduct));
+        assertTrue(cartPage.checkProductPrice(thirdProduct));
+        assertTrue(cartPage.checkTotalCalculation());
     }
 }

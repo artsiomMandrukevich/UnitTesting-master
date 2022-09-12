@@ -5,74 +5,58 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import store.Product;
-import io.qameta.allure.Allure;
 
 import java.util.*;
 
 public class CartPage extends BasePage {
 
-    private Float totalProductPrice = (float) 0;
-
-    private static final By CART_SUMMARY_TABLE = By.xpath("//table[@id='cart_summary']/tbody//tr");
-    private static final By PRODUCT_TOTAL_PRICE_VALUE = By.cssSelector(".cart_total .price");
-    private static final By TOTAL_SHIPPING_PRICE_VALUE = By.cssSelector("td[class='price'][id='total_shipping']");
-    private static final By TOTAL_TAX_PRICE_VALUE = By.cssSelector("td[class='price'][id='total_tax']");
-    private static final By TOTAL_PRICE_VALUE = By.cssSelector("tr[class='cart_total_price'] span[id='total_price']");
+    private static final By CART_ITEMS = By.cssSelector(".cart_item");
+    private static final By CART_ITEM_PRICE = By.cssSelector(".price .price");
+    private static final By CART_ITEM_TOTAL = By.cssSelector(".cart_total .price");
+    private static final By CART_ITEMS_SHIPPING_PRICE = By.cssSelector("td[class='price'][id='total_shipping']");
+    private static final By CART_ITEMS_TAX_PRICE = By.cssSelector("td[class='price'][id='total_tax']");
+    private static final By CART_ITEMS_FULL_TOTAL = By.cssSelector("tr[class='cart_total_price'] span[id='total_price']");
 
     public CartPage(WebDriver driver) {
         super(driver);
     }
 
     public float getTotalShippingPrice() {
-        return Float.parseFloat(driver.findElement(TOTAL_SHIPPING_PRICE_VALUE).getText().replace("$", ""));
+        return Float.parseFloat(driver.findElement(CART_ITEMS_SHIPPING_PRICE).getText().replace("$", ""));
     }
 
     public float getTotalTaxPrice() {
-        return Float.parseFloat(driver.findElement(TOTAL_TAX_PRICE_VALUE).getText().replace("$", ""));
+        return Float.parseFloat(driver.findElement(CART_ITEMS_TAX_PRICE).getText().replace("$", ""));
     }
 
     public float getTotalPrice() {
-        return Float.parseFloat(driver.findElement(TOTAL_PRICE_VALUE).getText().replace("$", ""));
+        return Float.parseFloat(driver.findElement(CART_ITEMS_FULL_TOTAL).getText().replace("$", ""));
     }
 
-    @Step("Check the cart contains our item")
-    public boolean checkProduct(Product product) {
-        String trRowByProductName = "//table[@id='cart_summary']/tbody//tr//p[@class='product-name']//a[text()='"
-                + product.getProductName()
-                + "']/../../..";
-        By tdProductPrice = By.xpath(trRowByProductName
-                + "//span[@class='price']/span[@class='price' or @class='price special-price']");
-        Float actualProductPrice = Float.valueOf(driver
-                .findElement(tdProductPrice)
-                .getText()
-                .replace("$", ""));
-        Allure.addAttachment("productName", String.valueOf(product.getProductName()));
-        Allure.addAttachment("actualProductPrice", String.valueOf(actualProductPrice));
-        Allure.addAttachment("expectedProductPrice", String.valueOf(product.getProductPrice()));
-        return actualProductPrice.equals(product.getProductPrice());
+    @Step("Check the cart contains product by name and price")
+    public boolean checkProductPrice(Product product) {
+        WebElement cartItem = getCartItemBy(product.getProductName());
+        WebElement cartItemPrice = cartItem.findElement(CART_ITEM_PRICE);
+        return cartItemPrice.getText().contains(String.valueOf(product.getProductPrice()));
     }
 
-    @Step("Check total price")
-    public boolean checkTotalPrice() {
+    private WebElement getCartItemBy(String productName) {
+        List<WebElement> cartItems = driver.findElements(CART_ITEMS);
+        return cartItems.stream().filter(cartItem -> cartItem.getText().contains(productName)).findFirst().get();
+    }
+
+    @Step("Check total calculation")
+    public boolean checkTotalCalculation() {
         float totalShippingPrice = getTotalShippingPrice();
         float totalTaxPrice = getTotalTaxPrice();
         float totalPrice = getTotalPrice();
         Float calculateTotalPrice;
-        List<WebElement> productRows = driver.findElements(CART_SUMMARY_TABLE);
-        productRows.forEach(row -> {
-            float productTotalPrice = Float.parseFloat(row
-                    .findElement(PRODUCT_TOTAL_PRICE_VALUE).getText()
-                    .replace("$", ""));
-            totalProductPrice += productTotalPrice;
-        });
-        calculateTotalPrice = totalPrice - totalTaxPrice - totalShippingPrice - totalProductPrice;
+        List<WebElement> products = driver.findElements(CART_ITEMS);
+        float itemsTotal = (float) products.stream().mapToDouble(row -> Double.parseDouble(row
+                .findElement(CART_ITEM_TOTAL).getText()
+                .replace("$", ""))).sum();
+        calculateTotalPrice = totalPrice - totalTaxPrice - totalShippingPrice - itemsTotal;
         calculateTotalPrice = (float) Math.round(calculateTotalPrice);
-        Allure.addAttachment("totalProductPrice", String.valueOf(totalProductPrice));
-        Allure.addAttachment("totalShippingPrice", String.valueOf(totalShippingPrice));
-        Allure.addAttachment("totalTaxPrice", String.valueOf(totalTaxPrice));
-        Allure.addAttachment("totalPrice", String.valueOf(totalPrice));
-        Allure.addAttachment("calculateTotalPrice", String.valueOf(calculateTotalPrice));
         return calculateTotalPrice.equals((float) 0);
     }
-
 }

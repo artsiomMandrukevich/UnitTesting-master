@@ -28,14 +28,14 @@ public class CreateAccountPage extends BasePage {
     }
 
     @Step("Fill out the Personal Info")
-    public void fillOutPersonalInfo(UserAccount userAccount) {
+    public void fillPersonalInfo(UserAccount userAccount) {
         element.sendKeys(FIRST_NAME_PERSONAL_INPUT, userAccount.getFirstName());
         element.sendKeys(LAST_NAME_PERSONAL_INPUT, userAccount.getLastName());
         element.sendKeys(PASSWORD_INPUT, userAccount.getPassword());
     }
 
     @Step("Fill out the Address Info")
-    public void fillOutAddressInfo(UserAccount userAccount) {
+    public void fillAddressInfo(UserAccount userAccount) {
         element.sendKeys(ADDRESS_LINE_1_INPUT, userAccount.getAddressLine1());
         element.sendKeys(CITY_INPUT, userAccount.getCity());
         element.selectByVisibleText(STATE_SELECT, userAccount.getState());
@@ -46,7 +46,7 @@ public class CreateAccountPage extends BasePage {
     }
 
     @Step("Click Register button")
-    public MyAccountPage clickRegisterButton() {
+    public MyAccountPage clickRegister() {
         driver.findElement(REGISTER_BUTTON).click();
         return new MyAccountPage(driver);
     }

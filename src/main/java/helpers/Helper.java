@@ -1,10 +1,11 @@
 package helpers;
 
+import com.beust.jcommander.internal.Lists;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.UserAccount;
-import lombok.SneakyThrows;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -12,22 +13,26 @@ import java.util.List;
 
 public class Helper {
 
+    private static List<UserAccount> userAccounts = Lists.newArrayList();
+
+    static {
+        try {
+            userAccounts = new ObjectMapper()
+                    .readValue(Helper.class.getResourceAsStream("/dataset/testAccounts.json")
+                            , new TypeReference<>() {
+                            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String getPrefixByDate() {
         Date date = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("ddMMyy_HHmmss");
         return formatForDateNow.format(date);
     }
 
-    @SneakyThrows
-    public static List<UserAccount> getUserAccounts() {
-        return new ObjectMapper()
-                .readValue(Helper.class.getResourceAsStream("/dataset/testAccounts.json")
-                        , new TypeReference<>() {
-                        });
-    }
-
     public UserAccount getUserAccountByIndex(int index) {
-        List<UserAccount> userAccount = getUserAccounts();
-        return userAccount.get(index);
+        return userAccounts.get(index);
     }
 }
