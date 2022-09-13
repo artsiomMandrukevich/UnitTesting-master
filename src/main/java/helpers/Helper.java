@@ -26,13 +26,13 @@ public class Helper {
         }
     }
 
-    public String getPrefixByDate() {
+    public static String getPrefixByDate() {
         Date date = new Date();
         SimpleDateFormat formatForDateNow = new SimpleDateFormat("ddMMyy_HHmmss");
         return formatForDateNow.format(date);
     }
 
-    public UserAccount getUserAccountByIndex(int index) {
+    public static UserAccount getUserAccountByIndex(int index) {
         return userAccounts.get(index);
     }
 }

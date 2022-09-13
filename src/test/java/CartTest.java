@@ -1,6 +1,5 @@
 import base.BaseTest;
 import dto.UserAccount;
-import helpers.Helper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,12 +7,13 @@ import pages.*;
 import store.Product;
 
 
+import static helpers.Helper.getPrefixByDate;
+import static helpers.Helper.getUserAccountByIndex;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CartTest extends BaseTest {
 
     private HomePage homepage;
-    private Helper helper = new Helper();
     private final int createUserAccountIndex = 0;
     private final int logInUserAccountIndex = 1;
 
@@ -25,8 +25,8 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Verify the ability to create an account")
     public void createAccountTest() {
-        UserAccount userAccount = helper.getUserAccountByIndex(createUserAccountIndex);
-        CreateAccountPage createAccountPage = homepage.createAccount(helper.getPrefixByDate() + userAccount.getEmail());
+        UserAccount userAccount = getUserAccountByIndex(createUserAccountIndex);
+        CreateAccountPage createAccountPage = homepage.createAccount(getPrefixByDate() + userAccount.getEmail());
         createAccountPage.fillPersonalInfo(userAccount);
         createAccountPage.fillAddressInfo(userAccount);
         MyAccountPage myAccountPage = createAccountPage.clickRegister();
@@ -36,7 +36,7 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Verify the ability to login in account")
     public void logInTest() {
-        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        UserAccount userAccount = getUserAccountByIndex(logInUserAccountIndex);
         MyAccountPage myAccountPage = homepage.logIn(userAccount);
         assertTrue(myAccountPage.getAccountName().contains(userAccount.getFirstName()));
     }
@@ -44,7 +44,7 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Verify the ability to add to auto-created Wishlist")
     public void autoCreatedWishListTest() {
-        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        UserAccount userAccount = getUserAccountByIndex(logInUserAccountIndex);
         MyAccountPage myAccountPage = homepage.logIn(userAccount);
         MyWishListPage myWishListPage = myAccountPage.goToMyWishListPage();
         ProductPage productPage = myWishListPage
@@ -60,7 +60,7 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Verify the ability to add to your Wishlist")
     public void addProductToYourWishListTest() {
-        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        UserAccount userAccount = getUserAccountByIndex(logInUserAccountIndex);
         MyAccountPage myAccountPage = homepage.logIn(userAccount);
         MyWishListPage myWishListPage = myAccountPage
                 .goToMyWishListPage()
@@ -78,7 +78,7 @@ public class CartTest extends BaseTest {
     @Test
     @DisplayName("Verify the ability to add to cart")
     public void addProductToCartTest() {
-        UserAccount userAccount = helper.getUserAccountByIndex(logInUserAccountIndex);
+        UserAccount userAccount = getUserAccountByIndex(logInUserAccountIndex);
         MyAccountPage myAccountPage = homepage.logIn(userAccount);
         StorePage storePage = myAccountPage
                 .goToStorePage()
