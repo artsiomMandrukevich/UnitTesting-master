@@ -22,9 +22,9 @@ public class BaseTest {
     @BeforeEach
     public void startBrowser() {
         driver = Driver.getDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.manage().window().maximize();
-        driver.get("https://mail.yandex.com/");
+        driver.get("http://automationpractice.com/index.php?controller=authentication&back=my-account");
     }
 
     @AfterEach
